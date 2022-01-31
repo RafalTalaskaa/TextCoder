@@ -6,7 +6,7 @@ int main()
 {
     int mode;
     int i;
-    printf("Odszyfrowanie Cezara - 1\nSzyfrowanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nDeszyfrowanie Afiniczne - 4\n");
+    printf("Odszyfrowanie Cezara - 1\nSzyfrowanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nDeszyfrowanie Afiniczne - 4\nSzyforwanie Morsa - 5\nOdszyfrowywanie Morsa - 6\n");
     scanf("%d", &mode);
     getchar();
 
@@ -24,7 +24,235 @@ int main()
     case 4:
         decryptAffine();
         break;
+    case 5:
+        encryptMorse();
+        break;
+    case 6:
+        decryptMorse();
+        break;
+    
     }
+}
+
+void encryptMorse(){
+    int i;
+    int j = 0;
+    char input[100];
+    char inputMorse [100];
+    FILE *fp;
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error");
+        exit(1);
+    }
+    fgets(input, sizeof(input), fp);
+    fclose(fp);
+
+        for(int i=0;i<=strlen(input);i++)
+        {
+                switch(toupper(input[i]))
+                {
+                  case 'A':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';                  
+                  break;
+
+                  case 'B':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                  break;
+
+                  case 'C':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                  break;
+
+                  case 'D':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                  break;
+
+                  case 'E':
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                  break;
+
+                  case 'F':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                  case 'G':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                  break;
+
+                  case 'H':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                   case 'I':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'J':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'K':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'L':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                  break;
+
+                case 'M':
+                  inputMorse[j++]='-';
+                    inputMorse[j++]='-';
+                    inputMorse[j]=' ';
+                    break;
+
+                case 'N':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'O':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'P':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'Q':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'R':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'S':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'T':
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'U':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'V':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'W':
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'X':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'y':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j]=' ';
+                    break;
+
+                case 'Z':
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='-';
+                  inputMorse[j++]='.';
+                  inputMorse[j++]='.';
+                  inputMorse[j]=' ';
+                    break;
+
+                case ' ':
+                  inputMorse[j++]= ' ';
+                  inputMorse[j++]= ' ';
+                  inputMorse[j++]= ' ';
+                  inputMorse[j]=' ';
+                    break;
+                }
+                
+
+            j++;
+        }
+        
+        puts(inputMorse);
+
 }
 
 void encryptAffine()
@@ -33,6 +261,7 @@ void encryptAffine()
     int i, j, k, gcd, key, key2;
     int numInput[100], numCipher[100];
     char input[100], cipher[100];
+    char *str = malloc(sizeof(char)*100);
     printf("Podaj słowo do zaszyforwania:\n");
     FILE *fp;
     fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
@@ -44,6 +273,8 @@ void encryptAffine()
     fgets(input, sizeof(input), fp);
 
     fclose(fp);
+    
+    
 
     for (i = 0, j = 0; i < strlen(input); i++)
     {
