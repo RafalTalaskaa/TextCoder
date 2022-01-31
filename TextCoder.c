@@ -4,9 +4,9 @@
 #include <stdlib.h>
 int main()
 {
-    int mode;
+    int mode = 4;
     printf("Odszyfrowanie Cezara - 1\nSzyfrowanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nDeszyfrowanie Afiniczne - 4\n");
-    scanf("%d", &mode);
+    //scanf("%d", &mode);
 
     switch (mode)
     {
@@ -19,14 +19,18 @@ int main()
     case 3:
         encryptAffine();
         break;
+    case 4:
+        decryptAffine();
+        break;
     }
 }
 
 void encryptAffine()
 {
-    int i, j, k, gcd, key, key2, numInput[100], numCipher[100];
+    int i, j, k, gcd, key, key2;
+    int numInput[100], numCipher[100];
     char input[100], cipher[100];
-    printf("Podaj słowo do zaszyforwaniaxd:\n");
+    printf("Podaj słowo do zaszyforwania:\n");
     gets(input);
 
     for (i = 0, j = 0; i < strlen(input); i++)
@@ -92,6 +96,82 @@ void encryptAffine()
     printf("\n");
 }
 
+void decryptAffine()
+{
+    int i, j, k, gcd, key, key2, keyInverse;
+    int numInput[100], numCipher[100];
+    char input[100], cipher[100];
+    printf("Podaj słowo do odszyforwania:\n");
+    gets(input);
+
+    for (i = 0, j = 0; i < strlen(input); i++)
+    {
+        if (input[i] != ' ')
+        {
+            input[j] = toupper(input[i]);
+            j++;
+        }
+        else
+        {
+            input[j] = ' ';
+            j++;
+        }
+    }
+    input[j] = '\0';
+    printf("Entered string is : %s \n", input);
+    printf("Wprowadź klucz z przedziału od 1 do 25\n");
+    scanf("%d", &key);
+    
+    if (key < 1 || key > 25)
+    {
+        printf("klucz powinien być z przedziału od 1 do 25\nSpróbuj ponownie\n");
+        exit(0);
+    }
+    gcd = greatestCommonDivisor(key);
+    if (gcd != 1)
+    {
+        printf("Nwd(key,26)=1 ,a Nwd(%d,26)=%d\nSpróbuj ponownie\n", key, gcd);
+        exit(0);
+    }
+    printf("Wprowadź klucz 2 z przedziału od 0 do 25\n");
+    scanf("%d", &key2);
+    if (key2 < 0 || key2 > 25)
+    {
+        printf("klucz powinien być z przedziału od 0 do 25\nSpróbuj ponownie\n");
+        exit(0);
+    }
+    
+
+    for (i = 0; i < strlen(input); i++)
+    {
+        if (input[i] != ' ')
+            numInput[i] = input[i] - 'A';
+        else
+            numInput[i] = -20;
+    }
+    
+    keyInverse = inverseKey(key);
+    printf("Odwrócony klucz to:%d \n", keyInverse);
+    printf("Odszyfrowane afinicznie słowo to: \n");
+    for (i = 0; i < strlen(input); i++)
+    {
+        if (numInput[i] != -20)
+        {
+            numCipher[i] = (keyInverse *(numInput[i] - key2)) % 26;
+            if (numCipher[i] < 0)
+            {
+                numCipher[i] = numCipher [i] + 26;
+            }
+            printf("%c", (numCipher[i] + 'A'));
+        }
+        else
+        {
+            printf(" ");
+        }
+    }
+    printf("\n");
+}
+
 int greatestCommonDivisor(int key)
 {
     int x;
@@ -105,6 +185,22 @@ int greatestCommonDivisor(int key)
         temp1 = x;
     }
     return (temp1);
+}
+
+int inverseKey(int key)
+{
+    int i, inverse;
+    for ( i = 1; i <= key; i++)
+    {
+        inverse = ((i*26)+1);
+        if(inverse%key == 0)
+        {
+            break;
+        }
+    }
+    inverse = inverse / key;
+    return (inverse);
+    
 }
 
 
