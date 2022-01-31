@@ -313,9 +313,7 @@ void encryptAffine()
     int numInput[100], numCipher[100];
     char input[100], cipher[100];
     char *str = malloc(sizeof(char) * 100);
-    printf("Podaj słowo do zaszyforwania:\n");
     FILE *fp;
-    FILE *fp2;
     fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
     if (fp == NULL)
     {
@@ -325,7 +323,6 @@ void encryptAffine()
     fgets(input, sizeof(input), fp);
 
     fclose(fp);
-    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\affiniccypher.txt", "w");
 
     for (i = 0, j = 0; i < strlen(input); i++)
     {
@@ -384,9 +381,7 @@ void encryptAffine()
             printf(" ");
         }
     }
-
     printf("\n");
-    fclose(fp2);
 }
 
 void decryptAffine()
@@ -509,7 +504,9 @@ void encryptCaesar()
     int i, j, key;
 
     FILE *fp;
+    FILE *fp2;
     fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "w");
     if (fp == NULL)
     {
         printf("Error");
@@ -552,6 +549,7 @@ void encryptCaesar()
         }
     }
     printf("Zaszyfrowana wiadomość to: %s", input);
+    fputs(input,fp2);
 }
 
 void decryptCaesar()
@@ -562,7 +560,7 @@ void decryptCaesar()
     int i, j, key;
 
     FILE *fp;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "r");
     if (fp == NULL)
     {
         printf("Error");
