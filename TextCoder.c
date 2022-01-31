@@ -4,9 +4,11 @@
 #include <stdlib.h>
 int main()
 {
-    int mode = 4;
+    int mode;
+    int i;
     printf("Odszyfrowanie Cezara - 1\nSzyfrowanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nDeszyfrowanie Afiniczne - 4\n");
-    //scanf("%d", &mode);
+    scanf("%d", &mode);
+    getchar();
 
     switch (mode)
     {
@@ -27,11 +29,21 @@ int main()
 
 void encryptAffine()
 {
+
     int i, j, k, gcd, key, key2;
     int numInput[100], numCipher[100];
     char input[100], cipher[100];
     printf("Podaj słowo do zaszyforwania:\n");
-    gets(input);
+    FILE *fp;
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error");
+        exit(1);
+    }
+    fgets(input, sizeof(input), fp);
+
+    fclose(fp);
 
     for (i = 0, j = 0; i < strlen(input); i++)
     {
@@ -50,7 +62,7 @@ void encryptAffine()
     printf("Entered string is : %s \n", input);
     printf("Wprowadź klucz z przedziału od 1 do 25\n");
     scanf("%d", &key);
-    
+
     if (key < 1 || key > 25)
     {
         printf("klucz powinien być z przedziału od 1 do 25\nSpróbuj ponownie\n");
@@ -69,7 +81,6 @@ void encryptAffine()
         printf("klucz powinien być z przedziału od 0 do 25\nSpróbuj ponownie\n");
         exit(0);
     }
-    
 
     for (i = 0; i < strlen(input); i++)
     {
@@ -78,7 +89,6 @@ void encryptAffine()
         else
             numInput[i] = -20;
     }
-    
 
     printf("Szyfr afiniczny słowa to: \n");
     for (i = 0; i < strlen(input); i++)
@@ -101,8 +111,16 @@ void decryptAffine()
     int i, j, k, gcd, key, key2, keyInverse;
     int numInput[100], numCipher[100];
     char input[100], cipher[100];
-    printf("Podaj słowo do odszyforwania:\n");
-    gets(input);
+    FILE *fp;
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error");
+        exit(1);
+    }
+    fgets(input, sizeof(input), fp);
+
+    fclose(fp);
 
     for (i = 0, j = 0; i < strlen(input); i++)
     {
@@ -121,7 +139,7 @@ void decryptAffine()
     printf("Entered string is : %s \n", input);
     printf("Wprowadź klucz z przedziału od 1 do 25\n");
     scanf("%d", &key);
-    
+
     if (key < 1 || key > 25)
     {
         printf("klucz powinien być z przedziału od 1 do 25\nSpróbuj ponownie\n");
@@ -140,7 +158,6 @@ void decryptAffine()
         printf("klucz powinien być z przedziału od 0 do 25\nSpróbuj ponownie\n");
         exit(0);
     }
-    
 
     for (i = 0; i < strlen(input); i++)
     {
@@ -149,7 +166,7 @@ void decryptAffine()
         else
             numInput[i] = -20;
     }
-    
+
     keyInverse = inverseKey(key);
     printf("Odwrócony klucz to:%d \n", keyInverse);
     printf("Odszyfrowane afinicznie słowo to: \n");
@@ -157,10 +174,10 @@ void decryptAffine()
     {
         if (numInput[i] != -20)
         {
-            numCipher[i] = (keyInverse *(numInput[i] - key2)) % 26;
+            numCipher[i] = (keyInverse * (numInput[i] - key2)) % 26;
             if (numCipher[i] < 0)
             {
-                numCipher[i] = numCipher [i] + 26;
+                numCipher[i] = numCipher[i] + 26;
             }
             printf("%c", (numCipher[i] + 'A'));
         }
@@ -190,19 +207,17 @@ int greatestCommonDivisor(int key)
 int inverseKey(int key)
 {
     int i, inverse;
-    for ( i = 1; i <= key; i++)
+    for (i = 1; i <= key; i++)
     {
-        inverse = ((i*26)+1);
-        if(inverse%key == 0)
+        inverse = ((i * 26) + 1);
+        if (inverse % key == 0)
         {
             break;
         }
     }
     inverse = inverse / key;
     return (inverse);
-    
 }
-
 
 void encryptCaesar()
 {
@@ -211,8 +226,16 @@ void encryptCaesar()
     char temp;
     int i, j, key;
 
-    printf("Podaj słowo do zaszyforwania: ");
-    scanf("%s", input);
+    FILE *fp;
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error");
+        exit(1);
+    }
+    fgets(input, sizeof(input), fp);
+
+    fclose(fp);
     printf("Podaj klucz: ");
     scanf("%d", &key);
     for (i = 0; input[i] != '\0'; ++i)
@@ -256,8 +279,16 @@ void decryptCaesar()
     char temp;
     int i, j, key;
 
-    printf("Podaj słowo do odszyforwania: ");
-    scanf("%s", input);
+    FILE *fp;
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    if (fp == NULL)
+    {
+        printf("Error");
+        exit(1);
+    }
+    fgets(input, sizeof(input), fp);
+
+    fclose(fp);
     printf("Podaj klucz: ");
     scanf("%d", &key);
     for (i = 0; input[i] != '\0'; ++i)
