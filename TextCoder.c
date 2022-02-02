@@ -6,7 +6,7 @@ int main()
 {
     int mode;
     int i;
-    printf("Szyfrowanie Cezara - 1\nOdszyfrowywanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nOdszyfrowywanie Afiniczne - 4\nSzyforwanie Morsa - 5\nOdszyfrowywanie Morsa - 6\n");
+    printf("Szyfrowanie Cezara - 11\nOdszyfrowywanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nOdszyfrowywanie Afiniczne - 4\nSzyforwanie Morsa - 5\nOdszyfrowywanie Morsa - 6\n");
     scanf("%d", &mode);
     getchar();
 
@@ -34,8 +34,10 @@ int main()
 }
 void decryptMorse()
 {
-    char *input[100];
+    char input[100];
     char *morseAlpha[100];
+    int numInput[100], numCypher[26];
+    const char delim[2] = " ";
 
     FILE *fp;
     fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\morse.txt", "r");
@@ -46,6 +48,8 @@ void decryptMorse()
     }
     fgets(input, 100, fp);
     fclose(fp);
+    char *ptr = malloc(100);
+    ptr = strtok(input, delim);
 
     morseAlpha[0] = ".-";
     morseAlpha[1] = "-...";
@@ -73,17 +77,59 @@ void decryptMorse()
     morseAlpha[23] = "-..-";
     morseAlpha[24] = "-.--"; //Y
     morseAlpha[25] = "--.-";
-    morseAlpha[26] = " ";
-    char *normalAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-";
+    char *normalAlpha = malloc(100);
+    normalAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     int i;
-    for (i = 0; i < 26; i++)
+    int j;
+    /*for (i = 0; i <= strlen(input); i++)
+    {
+        for (j = 0; i < 26; j++)
+        {
+            if (strcmp(input[i], morseAlpha[j]) == 0)
+            {
+                printf("%c", normalAlpha[j]);
+            }else{
+                printf(" ");
+            }
+        }*/
+
+    for (i = 0; i < strlen(input); i++)
+    {
+        if (input[i] != ' ')
+            numInput[i] = input[i] - 'A';
+        else
+            numInput[i] = -20;
+    }
+
+    printf("Odszyfrowane słowo to: \n");
+    for (i = 0; i < strlen(input); i++)
+
+    {
+        if (numInput[i] != -20)
+        {
+            if (strcmp(ptr, morseAlpha[0]) == 0)
+            {
+
+                printf("%c", normalAlpha[0]);
+
+                ptr = strtok(NULL, delim);
+            }
+        }
+        else
+        {
+            printf(" ");
+        }
+    }
+
+    /*for (i = 0; i < 26; i++)
     {
         if (strcmp(input, morseAlpha[i]) == 0)
         {
+
             printf("%c", normalAlpha[i]);
         }
-    }
+    }*/
 }
 
 void encryptMorse()
@@ -92,6 +138,7 @@ void encryptMorse()
     int j = 0;
     char input[100];
     char inputMorse[100];
+
     FILE *fp;
     fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
     if (fp == NULL)
@@ -302,10 +349,9 @@ void encryptMorse()
 
         j++;
     }
-
+    printf("Szyfr Morsa słowa to: \n");
     puts(inputMorse);
 }
-
 void encryptAffine()
 {
 
@@ -499,9 +545,12 @@ int inverseKey(int key)
 void encryptCaesar()
 {
 
-    char input[100];
     char temp;
     int i, j, key;
+    int size;
+    int lines = 0;
+
+    char ch;
 
     FILE *fp;
     FILE *fp2;
@@ -512,8 +561,24 @@ void encryptCaesar()
         printf("Error");
         exit(1);
     }
-    fgets(input, sizeof(input), fp);
 
+    ch = getc(fp);
+
+    while(ch != EOF)
+    {
+        if (ch == '\n')
+        {
+            lines = lines + 1;
+        }
+        ch = getc(fp);
+    }
+    printf("");
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    char input[size];
+    fseek(fp, 0L, SEEK_SET);
+    fread(input, sizeof(input), lines , fp);
+    input[size]='\0';
     fclose(fp);
     printf("Podaj klucz: ");
     scanf("%d", &key);
@@ -549,25 +614,44 @@ void encryptCaesar()
         }
     }
     printf("Zaszyfrowana wiadomość to: %s", input);
-    fputs(input,fp2);
+    fputs(input, fp2);
 }
 
 void decryptCaesar()
 {
 
-    char input[100];
-    char temp;
+ char temp;
     int i, j, key;
+    int size;
+    int lines = 0;
+
+    char ch;
 
     FILE *fp;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "r");
+    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
     if (fp == NULL)
     {
         printf("Error");
         exit(1);
     }
-    fgets(input, sizeof(input), fp);
 
+    ch = getc(fp);
+
+    while(ch != EOF)
+    {
+        if (ch == '\n')
+        {
+            lines = lines + 1;
+        }
+        ch = getc(fp);
+    }
+    printf("");
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    char input[size];
+    fseek(fp, 0L, SEEK_SET);
+    fread(input, sizeof(input), lines , fp);
+    input[size]='\0';
     fclose(fp);
     printf("Podaj klucz: ");
     scanf("%d", &key);
