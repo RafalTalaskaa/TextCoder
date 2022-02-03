@@ -134,63 +134,27 @@ void decryptMorse()
 }
 
 void encryptMorse()
-
 {
-
     int i;
     int j = 0;
     char input[100];
     char inputMorse[100];
 
+   
     FILE *fp;
-    char path[100];
+    FILE *fp2;
     printf("Wpisz ścieżkę pliku tekstowego:\n");
+    char path[50];
     scanf("%s", &path);
+    fp = fopen(path,"r");
 
-    fp = fopen(path, "r");
     if (fp == NULL)
     {
         printf("Error");
         exit(1);
     }
     fgets(input, sizeof(input), fp);
-
-    /* int i;
-    int j = 0;
-    
-
-    int size;
-    int lines = 0;
-
-    char ch;
-
-    FILE *fp;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
-    if (fp == NULL)
-    {
-        printf("Error");
-        exit(1);
-    }
-
-    ch = getc(fp);
-
-    while (ch != EOF)
-    {
-        if (ch == '\n')
-        {
-            lines = lines + 1;
-        }
-        ch = getc(fp);
-    }
-    fseek(fp, 0L, SEEK_END);
-    size = ftell(fp);
-    char input[size];
-    char inputMorse[size];
-    fseek(fp, 0L, SEEK_SET);
-    input[size] = '\0';
-    fread(input, size, lines - 2, fp);
-    input[size] = '\0';
-    fclose(fp);*/
+    fclose(fp);
 
     for (int i = 0; i <= strlen(input); i++)
     {
@@ -388,14 +352,13 @@ void encryptMorse()
             inputMorse[j++] = ' ';
             inputMorse[j] = ' ';
             break;
-
-            /*case '\n':
-            inputMorse[j] = '\n';*/
         }
+
         j++;
     }
-
-    printf("Zaszyfrowana wiadomość to:\n%s\n", inputMorse);
+    
+    printf("Zaszyfrowana wiadomość to:\n");
+    puts(inputMorse);
 }
 
 void encryptAffine()
@@ -412,7 +375,7 @@ void encryptAffine()
 
     FILE *fp;
     FILE *fp2;
- char path[100];
+    char path[100];
     printf("Wpisz ścieżkę pliku tekstowego:\n");
     scanf("%s", &path);
 
@@ -569,7 +532,7 @@ void decryptAffine()
     char input[size];
     char copy[size];
     fseek(fp, 0L, SEEK_SET);
-   // input[size] = '\0';
+    input[size] = '\0';
     fread(input, size, lines - 2, fp);
     fclose(fp);
 
@@ -723,7 +686,7 @@ void encryptCaesar()
     printf("Podaj klucz:\n");
     scanf("%d", &key);
 
-    for (i = 0, j = 0; i < strlen(input); i++)
+    for (i = 0, j = 0; i < size; i++)
     {
         if (input[i] != ' ')
         {
@@ -804,7 +767,7 @@ void decryptCaesar()
     printf("Podaj klucz:\n");
     scanf("%d", &key);
 
-    for (i = 0, j = 0; i < size - 1; i++)
+    for (i = 0, j = 0; i < size; i++)
     {
         if (input[i] != ' ')
         {
