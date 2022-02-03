@@ -378,7 +378,9 @@ void encryptMorse()
     }
     
     printf("Zaszyfrowana wiadomość to:\n%s",inputMorse);
-
+    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\morsecypher.txt","w");
+    fputs(inputMorse, fp2);
+    fclose(fp2);
 }
 
 void encryptAffine()
