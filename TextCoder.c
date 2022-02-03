@@ -6,7 +6,7 @@ int main()
 {
     int mode;
     int i;
-    printf("Szyfrowanie Cezara - 11\nOdszyfrowywanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nOdszyfrowywanie Afiniczne - 4\nSzyforwanie Morsa - 5\nOdszyfrowywanie Morsa - 6\n");
+    printf("Szyfrowanie Cezara - 1\nOdszyfrowywanie Cezara - 2\nSzyfrowanie Afiniczne - 3\nOdszyfrowywanie Afiniczne - 4\nSzyforwanie Morsa - 5\nOdszyfrowywanie Morsa - 6\n");
     scanf("%d", &mode);
     getchar();
 
@@ -32,6 +32,7 @@ int main()
         break;
     }
 }
+
 void decryptMorse()
 {
     char input[100];
@@ -133,11 +134,35 @@ void decryptMorse()
 }
 
 void encryptMorse()
+
 {
+
     int i;
     int j = 0;
     char input[100];
     char inputMorse[100];
+
+    FILE *fp;
+    char path[100];
+    printf("Wpisz ścieżkę pliku tekstowego:\n");
+    scanf("%s", &path);
+
+    fp = fopen(path, "r");
+    if (fp == NULL)
+    {
+        printf("Error");
+        exit(1);
+    }
+    fgets(input, sizeof(input), fp);
+
+    /* int i;
+    int j = 0;
+    
+
+    int size;
+    int lines = 0;
+
+    char ch;
 
     FILE *fp;
     fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
@@ -146,8 +171,26 @@ void encryptMorse()
         printf("Error");
         exit(1);
     }
-    fgets(input, sizeof(input), fp);
-    fclose(fp);
+
+    ch = getc(fp);
+
+    while (ch != EOF)
+    {
+        if (ch == '\n')
+        {
+            lines = lines + 1;
+        }
+        ch = getc(fp);
+    }
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    char input[size];
+    char inputMorse[size];
+    fseek(fp, 0L, SEEK_SET);
+    input[size] = '\0';
+    fread(input, size, lines - 2, fp);
+    input[size] = '\0';
+    fclose(fp);*/
 
     for (int i = 0; i <= strlen(input); i++)
     {
@@ -345,29 +388,63 @@ void encryptMorse()
             inputMorse[j++] = ' ';
             inputMorse[j] = ' ';
             break;
-        }
 
+            /*case '\n':
+            inputMorse[j] = '\n';*/
+        }
         j++;
     }
-    printf("Szyfr Morsa słowa to: \n");
-    puts(inputMorse);
+
+    printf("Zaszyfrowana wiadomość to:\n%s\n", inputMorse);
 }
+
 void encryptAffine()
 {
 
     int i, j, k, gcd, key, key2;
-    int numInput[100], numCipher[100];
-    char input[100], cipher[100];
+
     char *str = malloc(sizeof(char) * 100);
+
+    int size;
+    int lines = 0;
+
+    char ch;
+
     FILE *fp;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    FILE *fp2;
+ char path[100];
+    printf("Wpisz ścieżkę pliku tekstowego:\n");
+    scanf("%s", &path);
+
+    fp = fopen(path, "r");
+
+
     if (fp == NULL)
     {
         printf("Error");
         exit(1);
     }
-    fgets(input, sizeof(input), fp);
 
+    ch = getc(fp);
+
+    while (ch != EOF)
+    {
+        if (ch == '\n')
+        {
+            lines = lines + 1;
+        }
+        ch = getc(fp);
+    }
+
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    int numInput[size];
+    int numCipher[size];
+    char cipher[size];
+    char input[size];
+    char copy[size];
+    fseek(fp, 0L, SEEK_SET);
+    fread(input, size, lines - 2, fp);
     fclose(fp);
 
     for (i = 0, j = 0; i < strlen(input); i++)
@@ -384,7 +461,7 @@ void encryptAffine()
         }
     }
     input[j] = '\0';
-    printf("Wprowadź klucz z przedziału od 1 do 25\n");
+    printf("Wprowadź klucz z przedziału od 1 do 25:\n");
     scanf("%d", &key);
 
     if (key < 1 || key > 25)
@@ -398,7 +475,7 @@ void encryptAffine()
         printf("Nwd(key,26)=1 ,a Nwd(%d,26)=%d\nSpróbuj ponownie\n", key, gcd);
         exit(0);
     }
-    printf("Wprowadź klucz 2 z przedziału od 0 do 25\n");
+    printf("Wprowadź klucz 2 z przedziału od 0 do 25:\n");
     scanf("%d", &key2);
     if (key2 < 0 || key2 > 25)
     {
@@ -413,37 +490,87 @@ void encryptAffine()
         else
             numInput[i] = -20;
     }
-
-    printf("Szyfr afiniczny słowa to: \n");
+    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\affiniccypher.txt", "w");
+    printf("Szyfr afiniczny słowa to:\n");
     for (i = 0; i < strlen(input); i++)
     {
-        if (numInput[i] != -20)
+        if (numInput[i] != -20 && input[i] != '\n')
         {
             numCipher[i] = ((key * numInput[i]) + key2) % 26;
-            printf("%c", (numCipher[i] + 'A'));
+            char temp = (numCipher[i] + 'A');
+            copy[i] = temp;
+            printf("%c", copy[i]);
+        }
+        else if (input[i] == '\n')
+        {
+            printf("\n");
         }
         else
         {
             printf(" ");
         }
     }
+
+    for (i = 0; i < strlen(input); i++)
+    {
+        if (numInput[i] != -20 && input[i] != '\n')
+        {
+            fputc(copy[i], fp2);
+        }
+        else if (input[i] == '\n')
+        {
+            fputc('\n', fp2);
+        }
+        else
+        {
+            fputc(' ', fp2);
+        }
+    }
+
+    fclose(fp2);
     printf("\n");
 }
 
 void decryptAffine()
 {
     int i, j, k, gcd, key, key2, keyInverse;
-    int numInput[100], numCipher[100];
-    char input[100], cipher[100];
+    int size;
+    int lines = 0;
+
+    char ch;
+
     FILE *fp;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    char path[100];
+    printf("Wpisz ścieżkę pliku tekstowego:\n");
+    scanf("%s", &path);
+
+    fp = fopen(path, "r");
     if (fp == NULL)
     {
         printf("Error");
         exit(1);
     }
-    fgets(input, sizeof(input), fp);
 
+    ch = getc(fp);
+
+    while (ch != EOF)
+    {
+        if (ch == '\n')
+        {
+            lines = lines + 1;
+        }
+        ch = getc(fp);
+    }
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    int numInput[size];
+    int numCipher[size];
+    char cipher[size];
+    char input[size];
+    char copy[size];
+    fseek(fp, 0L, SEEK_SET);
+   // input[size] = '\0';
+    fread(input, size, lines - 2, fp);
     fclose(fp);
 
     for (i = 0, j = 0; i < strlen(input); i++)
@@ -460,7 +587,7 @@ void decryptAffine()
         }
     }
     input[j] = '\0';
-    printf("Wprowadź klucz z przedziału od 1 do 25\n");
+    printf("Wprowadź klucz z przedziału od 1 do 25:\n");
     scanf("%d", &key);
 
     if (key < 1 || key > 25)
@@ -474,7 +601,7 @@ void decryptAffine()
         printf("Nwd(key,26)=1 ,a Nwd(%d,26)=%d\nSpróbuj ponownie\n", key, gcd);
         exit(0);
     }
-    printf("Wprowadź klucz 2 z przedziału od 0 do 25\n");
+    printf("Wprowadź klucz 2 z przedziału od 0 do 25:\n");
     scanf("%d", &key2);
     if (key2 < 0 || key2 > 25)
     {
@@ -491,18 +618,24 @@ void decryptAffine()
     }
 
     keyInverse = inverseKey(key);
-    printf("Odwrócony klucz to:%d \n", keyInverse);
-    printf("Odszyfrowane afinicznie słowo to: \n");
+    printf("Odwrócony klucz to:\n%d\n", keyInverse);
+    printf("Odszyfrowane afinicznie słowo to:\n");
     for (i = 0; i < strlen(input); i++)
     {
-        if (numInput[i] != -20)
+        if (numInput[i] != -20 && input[i] != '\n')
         {
             numCipher[i] = (keyInverse * (numInput[i] - key2)) % 26;
             if (numCipher[i] < 0)
             {
                 numCipher[i] = numCipher[i] + 26;
             }
-            printf("%c", (numCipher[i] + 'A'));
+            char temp = (numCipher[i] + 'A');
+            copy[i] = temp;
+            printf("%c", copy[i]);
+        }
+        else if (input[i] == '\n')
+        {
+            printf("\n");
         }
         else
         {
@@ -554,8 +687,12 @@ void encryptCaesar()
 
     FILE *fp;
     FILE *fp2;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
-    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "w");
+    char path[100];
+    printf("Wpisz ścieżkę pliku tekstowego:\n");
+    scanf("%s", &path);
+    fp = fopen(path, "r");
+    
+
     if (fp == NULL)
     {
         printf("Error");
@@ -564,7 +701,7 @@ void encryptCaesar()
 
     ch = getc(fp);
 
-    while(ch != EOF)
+    while (ch != EOF)
     {
         if (ch == '\n')
         {
@@ -572,16 +709,20 @@ void encryptCaesar()
         }
         ch = getc(fp);
     }
-    printf("");
+
     fseek(fp, 0L, SEEK_END);
     size = ftell(fp);
     char input[size];
     fseek(fp, 0L, SEEK_SET);
-    fread(input, sizeof(input), lines , fp);
-    input[size]='\0';
+
+    fread(input, size, lines - 2, fp);
+    input[size] = '\0';
     fclose(fp);
-    printf("Podaj klucz: ");
+    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "w");
+
+    printf("Podaj klucz:\n");
     scanf("%d", &key);
+
     for (i = 0, j = 0; i < strlen(input); i++)
     {
         if (input[i] != ' ')
@@ -613,14 +754,18 @@ void encryptCaesar()
             input[i] = temp;
         }
     }
-    printf("Zaszyfrowana wiadomość to: %s", input);
+
+    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "w");
+    printf("Zaszyfrowana wiadomość to:\n%s", input);
     fputs(input, fp2);
+    fclose(fp2);
 }
 
 void decryptCaesar()
+
 {
 
- char temp;
+    char temp;
     int i, j, key;
     int size;
     int lines = 0;
@@ -628,7 +773,11 @@ void decryptCaesar()
     char ch;
 
     FILE *fp;
-    fp = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\message.txt", "r");
+    char path[100];
+    printf("Wpisz ścieżkę pliku tekstowego:\n");
+    scanf("%s", &path);
+
+    fp = fopen(path, "r");
     if (fp == NULL)
     {
         printf("Error");
@@ -637,7 +786,7 @@ void decryptCaesar()
 
     ch = getc(fp);
 
-    while(ch != EOF)
+    while (ch != EOF)
     {
         if (ch == '\n')
         {
@@ -645,18 +794,17 @@ void decryptCaesar()
         }
         ch = getc(fp);
     }
-    printf("");
     fseek(fp, 0L, SEEK_END);
     size = ftell(fp);
     char input[size];
     fseek(fp, 0L, SEEK_SET);
-    fread(input, sizeof(input), lines , fp);
-    input[size]='\0';
+    fread(input, size, lines - 2, fp);
+    input[size] = '\0';
     fclose(fp);
-    printf("Podaj klucz: ");
+    printf("Podaj klucz:\n");
     scanf("%d", &key);
 
-    for (i = 0, j = 0; i < strlen(input); i++)
+    for (i = 0, j = 0; i < size - 1; i++)
     {
         if (input[i] != ' ')
         {
@@ -688,5 +836,5 @@ void decryptCaesar()
             input[i] = temp;
         }
     }
-    printf("Odszyfrowana wiadomość to: %s", input);
+    printf("Odszyfrowana wiadomość to:\n%s", input);
 }
