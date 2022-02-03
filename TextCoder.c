@@ -78,22 +78,12 @@ void decryptMorse()
     morseAlpha[23] = "-..-";
     morseAlpha[24] = "-.--"; //Y
     morseAlpha[25] = "--.-";
+    morseAlpha[26] = " ";
     char *normalAlpha = malloc(100);
     normalAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     int i;
     int j;
-    /*for (i = 0; i <= strlen(input); i++)
-    {
-        for (j = 0; i < 26; j++)
-        {
-            if (strcmp(input[i], morseAlpha[j]) == 0)
-            {
-                printf("%c", normalAlpha[j]);
-            }else{
-                printf(" ");
-            }
-        }*/
 
     for (i = 0; i < strlen(input); i++)
     {
@@ -122,15 +112,6 @@ void decryptMorse()
             printf(" ");
         }
     }
-
-    /*for (i = 0; i < 26; i++)
-    {
-        if (strcmp(input, morseAlpha[i]) == 0)
-        {
-
-            printf("%c", normalAlpha[i]);
-        }
-    }*/
 }
 
 void encryptMorse()
@@ -143,13 +124,12 @@ void encryptMorse()
     char input[100];
     char inputMorse[100];
 
-   
     FILE *fp;
     FILE *fp2;
     printf("Wpisz ścieżkę pliku tekstowego:\n");
     char path[50];
     scanf("%s", &path);
-    fp = fopen(path,"r");
+    fp = fopen(path, "r");
 
     if (fp == NULL)
     {
@@ -169,7 +149,7 @@ void encryptMorse()
     fseek(fp, 0L, SEEK_END);
     size = ftell(fp);
     fseek(fp, 0L, SEEK_SET);
-    fread(input, size, lines , fp);
+    fread(input, size, lines, fp);
     input[size - 3] = '\0';
     fclose(fp);
 
@@ -376,9 +356,9 @@ void encryptMorse()
 
         j++;
     }
-    
-    printf("Zaszyfrowana wiadomość to:\n%s",inputMorse);
-    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\morsecypher.txt","w");
+
+    printf("Zaszyfrowana wiadomość to:\n%s", inputMorse);
+    fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\morsecypher.txt", "w");
     fputs(inputMorse, fp2);
     fclose(fp2);
 }
@@ -402,7 +382,6 @@ void encryptAffine()
     scanf("%s", &path);
 
     fp = fopen(path, "r");
-
 
     if (fp == NULL)
     {
@@ -677,7 +656,6 @@ void encryptCaesar()
     printf("Wpisz ścieżkę pliku tekstowego:\n");
     scanf("%s", &path);
     fp = fopen(path, "r");
-    
 
     if (fp == NULL)
     {
@@ -702,7 +680,7 @@ void encryptCaesar()
     fseek(fp, 0L, SEEK_SET);
 
     fread(input, size, lines - 2, fp);
-    input[size-3] = '\0';
+    input[size - 3] = '\0';
     fclose(fp);
     fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "w");
 
@@ -785,7 +763,7 @@ void decryptCaesar()
     char input[size];
     fseek(fp, 0L, SEEK_SET);
     fread(input, size, lines - 2, fp);
-    input[size-3] = '\0';
+    input[size - 3] = '\0';
     fclose(fp);
     printf("Podaj klucz:\n");
     scanf("%d", &key);
