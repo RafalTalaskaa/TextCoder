@@ -137,6 +137,9 @@ void encryptMorse()
 {
     int i;
     int j = 0;
+    int lines = 0;
+    int size;
+    char ch;
     char input[100];
     char inputMorse[100];
 
@@ -153,10 +156,24 @@ void encryptMorse()
         printf("Error");
         exit(1);
     }
-    fgets(input, sizeof(input), fp);
+    ch = getc(fp);
+
+    while (ch != EOF)
+    {
+        if (ch == '\n')
+        {
+            lines = lines + 1;
+        }
+        ch = getc(fp);
+    }
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0L, SEEK_SET);
+    fread(input, size, lines , fp);
+    input[size - 3] = '\0';
     fclose(fp);
 
-    for (int i = 0; i <= strlen(input); i++)
+    for (int i = 0; i <= size; i++)
     {
         switch (toupper(input[i]))
         {
@@ -352,13 +369,16 @@ void encryptMorse()
             inputMorse[j++] = ' ';
             inputMorse[j] = ' ';
             break;
+
+        case '\n':
+            inputMorse[j] = '\n';
         }
 
         j++;
     }
     
-    printf("Zaszyfrowana wiadomość to:\n");
-    puts(inputMorse);
+    printf("Zaszyfrowana wiadomość to:\n%s",inputMorse);
+
 }
 
 void encryptAffine()
@@ -408,9 +428,10 @@ void encryptAffine()
     char copy[size];
     fseek(fp, 0L, SEEK_SET);
     fread(input, size, lines - 2, fp);
+    input[size - 3] = '\0';
     fclose(fp);
 
-    for (i = 0, j = 0; i < strlen(input); i++)
+    for (i = 0, j = 0; i < size; i++)
     {
         if (input[i] != ' ')
         {
@@ -455,7 +476,7 @@ void encryptAffine()
     }
     fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\affiniccypher.txt", "w");
     printf("Szyfr afiniczny słowa to:\n");
-    for (i = 0; i < strlen(input); i++)
+    for (i = 0; i < size - 4; i++)
     {
         if (numInput[i] != -20 && input[i] != '\n')
         {
@@ -474,7 +495,7 @@ void encryptAffine()
         }
     }
 
-    for (i = 0; i < strlen(input); i++)
+    for (i = 0; i < size - 4; i++)
     {
         if (numInput[i] != -20 && input[i] != '\n')
         {
@@ -532,7 +553,7 @@ void decryptAffine()
     char input[size];
     char copy[size];
     fseek(fp, 0L, SEEK_SET);
-    input[size] = '\0';
+    input[size - 3] = '\0';
     fread(input, size, lines - 2, fp);
     fclose(fp);
 
@@ -583,7 +604,7 @@ void decryptAffine()
     keyInverse = inverseKey(key);
     printf("Odwrócony klucz to:\n%d\n", keyInverse);
     printf("Odszyfrowane afinicznie słowo to:\n");
-    for (i = 0; i < strlen(input); i++)
+    for (i = 0; i < size - 4; i++)
     {
         if (numInput[i] != -20 && input[i] != '\n')
         {
@@ -679,7 +700,7 @@ void encryptCaesar()
     fseek(fp, 0L, SEEK_SET);
 
     fread(input, size, lines - 2, fp);
-    input[size] = '\0';
+    input[size-3] = '\0';
     fclose(fp);
     fp2 = fopen("C:\\Users\\rafal\\Documents\\GitHub\\TextCoder\\savecypher.txt", "w");
 
@@ -762,7 +783,7 @@ void decryptCaesar()
     char input[size];
     fseek(fp, 0L, SEEK_SET);
     fread(input, size, lines - 2, fp);
-    input[size] = '\0';
+    input[size-3] = '\0';
     fclose(fp);
     printf("Podaj klucz:\n");
     scanf("%d", &key);
